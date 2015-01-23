@@ -1,4 +1,4 @@
-#One Page Scroll 1.3.1 by Pete R.
+#One Page Scroll 1.3.2 by Pete R, additions by Ben Jackson.
 Create an Apple-like one page scroll website (iPhone 5S website) with One Page Scroll plugin
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
 
