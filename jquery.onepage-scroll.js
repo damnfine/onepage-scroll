@@ -335,6 +335,9 @@
     if(window.location.hash != "" && window.location.hash != "#1") {
       init_index =  window.location.hash.replace("#", "")
 
+      if(settings.updateURLID){
+        init_index = $('#'+init_index).data('index');
+      }
       if (parseInt(init_index) <= total && parseInt(init_index) > 0) {
         $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
         $("body").addClass("viewing-page-"+ init_index)
