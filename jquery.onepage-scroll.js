@@ -22,19 +22,20 @@
     animationTime: 1000,
     pagination: true,
     updateURL: false,
+    updateURLID: false,
     keyboard: true,
     beforeMove: null,
     afterMove: null,
     loop: true,
     responsiveFallback: false,
     direction : 'vertical'
-	};
+  };
 
-	/*------------------------------------------------*/
-	/*  Credit: Eike Send for the awesome swipe event */
-	/*------------------------------------------------*/
+  /*------------------------------------------------*/
+  /*  Credit: Eike Send for the awesome swipe event */
+  /*------------------------------------------------*/
 
-	$.fn.swipeEvents = function() {
+  $.fn.swipeEvents = function() {
       return this.each(function() {
 
         var startX,
@@ -96,8 +97,8 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
-    	// an top animate so IE8 users can also use this script.
-    	if($('html').hasClass('ie8')){
+      // an top animate so IE8 users can also use this script.
+      if($('html').hasClass('ie8')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
           $(this).animate({left: toppos+'px'},settings.animationTime);
@@ -105,9 +106,9 @@
           var toppos = (el.height()/100)*pos;
           $(this).animate({top: toppos+'px'},settings.animationTime);
         }
-    	} else{
-    	  $(this).css({
-    	    "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
+      } else{
+        $(this).css({
+          "-webkit-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "-webkit-transition": "all " + settings.animationTime + "ms " + settings.easing,
          "-moz-transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "-moz-transition": "all " + settings.animationTime + "ms " + settings.easing,
@@ -115,9 +116,9 @@
          "-ms-transition": "all " + settings.animationTime + "ms " + settings.easing,
          "transform": ( settings.direction == 'horizontal' ) ? "translate3d(" + pos + "%, 0, 0)" : "translate3d(0, " + pos + "%, 0)",
          "transition": "all " + settings.animationTime + "ms " + settings.easing
-    	  });
-    	}
-      $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+        });
+      }
+      $(this).one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function() {
         if (typeof settings.afterMove == 'function') settings.afterMove(index);
       });
     }
@@ -128,7 +129,7 @@
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
       next = $(settings.sectionContainer + "[data-index='" + (index + 1) + "']");
       if(next.length < 1) {
-        if (settings.loop == true) {
+        if (settings.loop === true) {
           pos = 0;
           next = $(settings.sectionContainer + "[data-index='1']");
         } else {
@@ -141,7 +142,7 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove( next.data("index"));
       current.removeClass("active")
       next.addClass("active");
-      if(settings.pagination == true) {
+      if(settings.pagination === true) {
         $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
         $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
       }
@@ -149,8 +150,8 @@
       $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
       $("body").addClass("viewing-page-"+next.data("index"))
 
-      if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index + 1);
+      if (history.replaceState && settings.updateURL === true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (settings.updateURLID ? next.attr('id'):(index + 1));
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
@@ -163,7 +164,7 @@
       next = $(settings.sectionContainer + "[data-index='" + (index - 1) + "']");
 
       if(next.length < 1) {
-        if (settings.loop == true) {
+        if (settings.loop === true) {
           pos = ((total - 1) * 100) * -1;
           next = $(settings.sectionContainer + "[data-index='"+total+"']");
         }
@@ -176,15 +177,15 @@
       if (typeof settings.beforeMove == 'function') settings.beforeMove(next.data("index"));
       current.removeClass("active")
       next.addClass("active")
-      if(settings.pagination == true) {
+      if(settings.pagination === true) {
         $(".onepage-pagination li a" + "[data-index='" + index + "']").removeClass("active");
         $(".onepage-pagination li a" + "[data-index='" + next.data("index") + "']").addClass("active");
       }
       $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
       $("body").addClass("viewing-page-"+next.data("index"))
 
-      if (history.replaceState && settings.updateURL == true) {
-        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (index - 1);
+      if (history.replaceState && settings.updateURL === true) {
+        var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (settings.updateURLID ? next.attr('id'):(index - 1));
         history.pushState( {}, document.title, href );
       }
       el.transformPage(settings, pos, next.data("index"));
@@ -204,8 +205,8 @@
 
         pos = ((page_index - 1) * 100) * -1;
 
-        if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (page_index - 1);
+        if (history.replaceState && settings.updateURL === true) {
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (settings.updateURLID ? next.attr('id'):(page_index - 1));
             history.pushState( {}, document.title, href );
         }
         el.transformPage(settings, pos, page_index);
@@ -218,18 +219,18 @@
       var typeOfRF = typeof settings.responsiveFallback
 
       if(typeOfRF == "number"){
-      	valForTest = $(window).width() < settings.responsiveFallback;
+        valForTest = $(window).width() < settings.responsiveFallback;
       }
       if(typeOfRF == "boolean"){
-      	valForTest = settings.responsiveFallback;
+        valForTest = settings.responsiveFallback;
       }
       if(typeOfRF == "function"){
-      	valFunction = settings.responsiveFallback();
-      	valForTest = valFunction;
-      	typeOFv = typeof valForTest;
-      	if(typeOFv == "number"){
-      		valForTest = $(window).width() < valFunction;
-      	}
+        valFunction = settings.responsiveFallback();
+        valForTest = valFunction;
+        typeOFv = typeof valForTest;
+        if(typeOFv == "number"){
+          valForTest = $(window).width() < valFunction;
+        }
       }
 
       //end modification
@@ -304,7 +305,7 @@
         topPos = topPos + 100;
 
 
-      if(settings.pagination == true) {
+      if(settings.pagination === true) {
         paginationList += "<li><a data-index='"+(i+1)+"' href='#" + (i+1) + "'></a></li>"
       }
     });
@@ -318,7 +319,7 @@
     });
 
     // Create Pagination and Display Them
-    if (settings.pagination == true) {
+    if (settings.pagination === true) {
       if ($('ul.onepage-pagination').length < 1) $("<ul class='onepage-pagination'></ul>").prependTo("body");
 
       if( settings.direction == 'horizontal' ) {
@@ -334,19 +335,22 @@
     if(window.location.hash != "" && window.location.hash != "#1") {
       init_index =  window.location.hash.replace("#", "")
 
+      if(settings.updateURLID){
+        init_index = $('#'+init_index).data('index');
+      }
       if (parseInt(init_index) <= total && parseInt(init_index) > 0) {
         $(settings.sectionContainer + "[data-index='" + init_index + "']").addClass("active")
         $("body").addClass("viewing-page-"+ init_index)
-        if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
+        if(settings.pagination === true) $(".onepage-pagination li a" + "[data-index='" + init_index + "']").addClass("active");
 
         next = $(settings.sectionContainer + "[data-index='" + (init_index) + "']");
         if(next) {
           next.addClass("active")
-          if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='" + (init_index) + "']").addClass("active");
+          if(settings.pagination === true) $(".onepage-pagination li a" + "[data-index='" + (init_index) + "']").addClass("active");
           $("body")[0].className = $("body")[0].className.replace(/\bviewing-page-\d.*?\b/g, '');
           $("body").addClass("viewing-page-"+next.data("index"))
-          if (history.replaceState && settings.updateURL == true) {
-            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (init_index);
+          if (history.replaceState && settings.updateURL === true) {
+            var href = window.location.href.substr(0,window.location.href.indexOf('#')) + "#" + (settings.updateURLID ? next.attr('id'):init_index);
             history.pushState( {}, document.title, href );
           }
         }
@@ -355,15 +359,15 @@
       } else {
         $(settings.sectionContainer + "[data-index='1']").addClass("active")
         $("body").addClass("viewing-page-1")
-        if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
+        if(settings.pagination === true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
       }
     }else{
       $(settings.sectionContainer + "[data-index='1']").addClass("active")
       $("body").addClass("viewing-page-1")
-      if(settings.pagination == true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
+      if(settings.pagination === true) $(".onepage-pagination li a" + "[data-index='1']").addClass("active");
     }
 
-    if(settings.pagination == true)  {
+    if(settings.pagination === true)  {
       $(".onepage-pagination li a").click(function (){
         var page_index = $(this).data("index");
         el.moveTo(page_index);
@@ -378,7 +382,7 @@
     });
 
 
-    if(settings.responsiveFallback != false) {
+    if(settings.responsiveFallback !== false) {
       $(window).resize(function() {
         responsive();
       });
@@ -386,7 +390,7 @@
       responsive();
     }
 
-    if(settings.keyboard == true) {
+    if(settings.keyboard === true) {
       $(document).keydown(function(e) {
         var tag = e.target.tagName.toLowerCase();
 
