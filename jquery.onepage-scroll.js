@@ -98,7 +98,7 @@
 
       // Just a simple edit that makes use of modernizr to detect an IE8 browser and changes the transform method into
       // an top animate so IE8 users can also use this script.
-      if($('html').hasClass('ie8')){
+      if($('html').hasClass('no-csstransforms3d')){
         if (settings.direction == 'horizontal') {
           var toppos = (el.width()/100)*pos;
           $(this).animate({left: toppos+'px'},settings.animationTime);
