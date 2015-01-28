@@ -91,7 +91,8 @@
         leftPos = 0,
         lastAnimation = 0,
         quietPeriod = 500,
-        paginationList = "";
+        paginationList = "",
+        disabled = false;
 
     $.fn.transformPage = function(settings, pos, index) {
       if (typeof settings.beforeMove == 'function') settings.beforeMove(index);
@@ -124,6 +125,7 @@
     }
 
     $.fn.moveDown = function() {
+      if (disabled) {return;}
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
@@ -158,6 +160,7 @@
     }
 
     $.fn.moveUp = function() {
+      if (disabled) {return;}
       var el = $(this)
       index = $(settings.sectionContainer +".active").data("index");
       current = $(settings.sectionContainer + "[data-index='" + index + "']");
@@ -192,6 +195,7 @@
     }
 
     $.fn.moveTo = function(page_index) {
+      if (disabled) {return;}
       current = $(settings.sectionContainer + ".active")
       next = $(settings.sectionContainer + "[data-index='" + (page_index) + "']");
       if(next.length > 0) {
@@ -211,6 +215,14 @@
         }
         el.transformPage(settings, pos, page_index);
       }
+    }
+
+    $.fn.disable = function() {
+      disabled = true;
+    }
+ 
+    $.fn.enable = function() {
+      disabled = false;
     }
 
     function responsive() {
@@ -376,6 +388,7 @@
 
 
     $(document).bind('mousewheel DOMMouseScroll MozMousePixelScroll', function(event) {
+      if (disabled) {return;}
       event.preventDefault();
       var delta = event.originalEvent.wheelDelta || -event.originalEvent.detail;
       if(!$("body").hasClass("disabled-onepage-scroll")) init_scroll(event, delta);
